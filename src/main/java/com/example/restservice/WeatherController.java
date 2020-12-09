@@ -1,5 +1,6 @@
 package com.example.restservice;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,7 +56,7 @@ public class WeatherController {
 
         boolean nameExists = cities.stream().anyMatch(x -> x.getName().equals(name));
 
-        if(!nameExists) {
+        if(!nameExists && name!=null) {
             City newCity = new City();
             newCity.setName(name);
             newCity.setId(cities.size());
@@ -74,6 +75,27 @@ public class WeatherController {
         response.setId(newCity.getId());
         response.setMessage(message);
 
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping(value = "/deleteCity/{name}")
+    public ResponseEntity<CityResponseModel> deletePost(@PathVariable String name) {
+
+        boolean nameExists = cities.stream().anyMatch(x -> x.getName().equals(name));
+        String message ="City "+ name + " is removed from list";
+
+         CityResponseModel response = new CityResponseModel();
+
+        if(!nameExists){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+int ixs = cities.stream()
+        .filter(x -> x.getName().equals(name))
+        .findFirst().get().getId();
+
+
+        cities.remove(ixs);
+                      response.setMessage(message);
         return ResponseEntity.ok(response);
     }
 }
