@@ -15,13 +15,12 @@ public class BaseClass {
 
     @BeforeMethod
     public void setup(){
-        client  = HttpClientBuilder.create().build();
+        client = HttpClientBuilder.create().build();
     }
 
     @AfterMethod
-    public void closeResources() throws IOException {
+    public void closeResources() throws IOException{
         client.close();
         response.close();
     }
-
 }

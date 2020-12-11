@@ -2,8 +2,8 @@ package com.example.restservice;
 
 public class City {
 
-        private String name;
-        private Integer id;
+    private String name;
+    private Integer id;
 
     public Integer getId(){
         return id;
@@ -14,11 +14,11 @@ public class City {
     }
 
     public String getName(){
-            return name;
-        }
+        return name;
+    }
 
-        public void setName(String name){
-            this.name = name;
-        }
+    public void setName(String name){
+        this.name = name;
+    }
 
 }

@@ -3,6 +3,7 @@ package com.example.restservice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -42,13 +43,12 @@ public class WeatherController {
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-        }
-        else{
+        } else {
             content = "City isn't defined in a list";
             temperature = null;
             long id = 0;
 
-            return  new Weather(temperature, id, content);
+            return new Weather(temperature, id, content);
 
 
         }
@@ -56,9 +56,10 @@ public class WeatherController {
     }
 
     @GetMapping(path = "/citiesList", produces = "application/json")
-    public @ResponseBody List<City> getCities() {
+    public @ResponseBody
+    List<City> getCities(){
 
-       return cities;
+        return cities;
     }
 
     @PostMapping(path = "/city", consumes = "application/json", produces = "application/json")
@@ -66,11 +67,11 @@ public class WeatherController {
     public ResponseEntity<CityResponseModel> createCity(@RequestBody CityRequestModel city) throws Exception{
         String name = city.getCity();
 
-        String message ="City "+ name + " already exists";
+        String message = "City " + name + " already exists";
 
-       nameExists = cities.stream().anyMatch(x -> x.getName().equals(name));
+        nameExists = cities.stream().anyMatch(x -> x.getName().equals(name));
 
-        if(!nameExists && name!=null) {
+        if ( !nameExists && name != null ) {
             City newCity = new City();
             newCity.setName(name);
             newCity.setId(cities.size());
@@ -79,7 +80,7 @@ public class WeatherController {
             message = "City added";
         }
 
-       City newCity = cities
+        City newCity = cities
                 .stream()
                 .filter(x -> x.getName().equals(name))
                 .findFirst()
@@ -93,23 +94,22 @@ public class WeatherController {
     }
 
     @DeleteMapping(value = "/deleteCity/{name}")
-    public ResponseEntity<CityResponseModel> deletePost(@PathVariable String name) {
+    public ResponseEntity<CityResponseModel> deletePost(@PathVariable String name){
 
         boolean nameExists = cities.stream().anyMatch(x -> x.getName().equals(name));
-        String message ="City "+ name + " is removed from list";
+        String message = "City " + name + " is removed from list";
 
-         CityResponseModel response = new CityResponseModel();
+        CityResponseModel response = new CityResponseModel();
 
-        if(!nameExists){
+        if ( !nameExists ) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-int ixs = cities.stream()
-        .filter(x -> x.getName().equals(name))
-        .findFirst().get().getId();
-
+        int ixs = cities.stream()
+                .filter(x -> x.getName().equals(name))
+                .findFirst().get().getId();
 
         cities.remove(ixs);
-                      response.setMessage(message);
+        response.setMessage(message);
         return ResponseEntity.ok(response);
     }
 }

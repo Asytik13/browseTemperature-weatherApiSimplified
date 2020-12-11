@@ -5,7 +5,9 @@ import org.apache.http.entity.StringEntity;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+
 import java.io.IOException;
+
 import static org.testng.Assert.assertEquals;
 
 public class EndpointTests extends BaseClass {
