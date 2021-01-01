@@ -1,15 +1,10 @@
-package com.example.restservice;
+package com.example.restservice.entity;
 
 public class Weather {
 
     private final long id;
     private final String content;
     private Double temperature;
-
-    public Weather(long id, String content) {
-        this.id = id;
-        this.content = content;
-    }
 
     public Weather(Double temperature, long id, String content) {
         this.temperature = temperature;

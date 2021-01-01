@@ -1,9 +1,14 @@
-package com.example.restservice;
+package com.example.restservice.entity;
 
 public class City {
 
     private String name;
     private Integer id;
+
+    public City (String name, Integer id){
+        this.name = name;
+        this.id = id;
+    }
 
     public Integer getId(){
         return id;

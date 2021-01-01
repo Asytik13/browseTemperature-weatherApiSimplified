@@ -1,4 +1,4 @@
-package com.example.restservice;
+package com.example.restservice.model;
 
 public class CityRequestModel {
     private String city;
