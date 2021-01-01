@@ -1,7 +1,6 @@
 package com.example.restservice.model;
 
 import com.example.restservice.entity.City;
-
 import java.util.List;
 
 public class CityResponseModelGetCities {
