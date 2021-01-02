@@ -5,6 +5,7 @@ import com.example.restservice.entity.City;
 import com.example.restservice.helper.JsonConverter;
 import com.example.restservice.model.CitiesResponseModel;
 import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,5 +86,13 @@ public class CityControllerTestsWithSetup extends BaseClass {
         String message = this.mockMvc.perform(delete(BASE_ENDPOINT + "/deleteCity/Krakow2"))
                 .andDo(print()).andExpect(status().isBadRequest()).andReturn().getResolvedException().getMessage();
         assertThat(message).isEqualTo("400 BAD_REQUEST \"No such city in a list\"");
+    }
+
+    @AfterEach
+    public void clear() throws Exception{
+        if ( verifyCityIsAdded() ) {
+            this.mockMvc.perform(delete(BASE_ENDPOINT + "/deleteCity/Krakow"))
+                    .andDo(print()).andExpect(status().isOk());
+        }
     }
 }

@@ -34,10 +34,6 @@ public class CityControllerTests extends BaseClass {
         JsonConverter converter = new JsonConverter();
         String body = createRequestBody("Krakow");
 
-        if ( verifyCityIsAdded() ) {
-            this.mockMvc.perform(delete(BASE_ENDPOINT + "/deleteCity/Krakow"))
-                    .andDo(print()).andExpect(status().isOk());
-        }
 
         String actualResponseBody = this.mockMvc.perform(post(BASE_ENDPOINT + "/city")
                                                                  .contentType(MediaType.APPLICATION_JSON)
