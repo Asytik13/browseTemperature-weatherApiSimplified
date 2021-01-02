@@ -1,2 +1,5 @@
 # Project exclude paths
 /target/
+.idea
+browseTemperature-weatherApiSimplified.iml
+out
