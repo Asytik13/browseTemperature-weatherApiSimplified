@@ -4,9 +4,11 @@ import com.example.restservice.entity.Weather;
 
 public class WeatherResponseModel {
 
-    private final long id;
-    private final String content;
+    private long id;
+    private String content;
     private Double temperature;
+
+    public WeatherResponseModel (){}
 
     public WeatherResponseModel(Weather weather){
         this.temperature = weather.getTemperature();

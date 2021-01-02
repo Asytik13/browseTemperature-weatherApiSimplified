@@ -6,6 +6,7 @@ import com.example.restservice.service.WeatherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -18,8 +19,9 @@ public class WeatherController {
     public void setWeatherService(WeatherService weatherService) { this.weatherService = weatherService; }
 
     @GetMapping("/temperature")
-    public ResponseEntity<WeatherResponseModel> getTemperature(@RequestParam(value = "city", defaultValue = "Krakow") String city){
+    public ResponseEntity<WeatherResponseModel> getTemperature(@RequestParam("city") String city, Model model){
         try {
+            model.addAttribute("city", city);
             Weather weather = weatherService.getWeatherForCity(city);
             WeatherResponseModel result = new WeatherResponseModel(weather);
 

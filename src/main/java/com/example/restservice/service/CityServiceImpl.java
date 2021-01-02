@@ -9,7 +9,7 @@ import java.util.List;
 @Service
 public class CityServiceImpl implements CityService {
 
-    private static List<City> cities = new ArrayList<>();
+    public static List<City> cities = new ArrayList<>();
     boolean nameExists;
 
     @Override
@@ -19,19 +19,20 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public City addCity(String cityName) throws Exception{
-        if ( cityName == null ) {
-            throw new Exception("Invalid body");
-        }
 
-        nameExists = cities.stream().anyMatch(x -> x.getName().equals(cityName));
-        City newCity;
-        if ( !nameExists ) {
-            newCity = new City(cityName, cities.size());
-            cities.add(newCity);
-        } else {
-            throw new Exception("City already exists");
-        }
-        return newCity;
+            if ( cityName == null ) {
+                throw new Exception("Invalid body");
+            }
+
+            nameExists = cities.stream().anyMatch(x -> x.getName().equals(cityName));
+            City newCity;
+            if ( !nameExists ) {
+                newCity = new City(cityName, cities.size());
+                cities.add(newCity);
+            } else {
+                throw new Exception("City already exists");
+            }
+            return newCity;
     }
 
     @Override

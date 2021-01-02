@@ -12,7 +12,8 @@ import java.util.regex.Pattern;
 @Service
 public class WeatherServiceImpl implements WeatherService {
 
-    private List<City> cities = new ArrayList<>();
+   // CityServiceImpl.
+    private List<City> cities = CityServiceImpl.cities;
     private static final Pattern tempPattern = Pattern.compile("^.*\"temp_c\":\\s*(.+?)\\s*,.*");
     private boolean nameExists;
 
