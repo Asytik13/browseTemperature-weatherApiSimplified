@@ -4,7 +4,6 @@ import com.example.restservice.entity.City;
 import com.example.restservice.entity.Weather;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -12,7 +11,6 @@ import java.util.regex.Pattern;
 @Service
 public class WeatherServiceImpl implements WeatherService {
 
-   // CityServiceImpl.
     private List<City> cities = CityServiceImpl.cities;
     private static final Pattern tempPattern = Pattern.compile("^.*\"temp_c\":\\s*(.+?)\\s*,.*");
     private boolean nameExists;

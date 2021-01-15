@@ -30,7 +30,7 @@ public class WeatherControllerTests extends BaseClass {
     public void setup() throws Exception{
 
         body = createRequestBody("Krakow");
-        this.mockMvc.perform(post(BASE_ENDPOINT + "/city")
+        this.mockMvc.perform(post(BASE_ENDPOINT + "/cities")
                                      .contentType(MediaType.APPLICATION_JSON)
                                      .content(body));
     }
@@ -59,7 +59,7 @@ public class WeatherControllerTests extends BaseClass {
 
     @AfterEach
     public void clear() throws Exception{
-        this.mockMvc.perform(delete(BASE_ENDPOINT + "/deleteCity/Krakow"))
+        this.mockMvc.perform(delete(BASE_ENDPOINT + "/cities/Krakow"))
                 .andDo(print()).andExpect(status().isOk());
     }
 }
