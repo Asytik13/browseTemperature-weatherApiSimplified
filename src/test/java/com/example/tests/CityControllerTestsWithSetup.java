@@ -4,7 +4,6 @@ import com.example.restservice.Main;
 import com.example.restservice.entity.City;
 import com.example.restservice.helper.JsonConverter;
 import com.example.restservice.model.CitiesResponseModel;
-import org.junit.Before;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,25 +34,30 @@ public class CityControllerTestsWithSetup extends BaseClass {
     public void setup() throws Exception{
 
         body = createRequestBody("Krakow");
-        this.mockMvc.perform(post(BASE_ENDPOINT + "/city")
+        this.mockMvc.perform(post(BASE_ENDPOINT + "/cities")
                                      .contentType(MediaType.APPLICATION_JSON)
                                      .content(body));
     }
 
     @Test
     public void postAlreadyExistingCityReturns400() throws Exception{
-        String message = this.mockMvc.perform(post(BASE_ENDPOINT + "/city")
+        String message = this.mockMvc.perform(post(BASE_ENDPOINT + "/cities")
                                                       .contentType(MediaType.APPLICATION_JSON)
                                                       .content(body))
-                .andDo(print()).andExpect(status().isBadRequest()).andReturn().getResolvedException().getMessage();
-        assertThat(message).isEqualTo("400 BAD_REQUEST \"City is Not Added. City already exists\"");
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertThat(message).isEqualTo("City is Not Added");
     }
 
     @Test
     public void deleteCityReturns200() throws Exception{
-        this.mockMvc.perform(delete(BASE_ENDPOINT + "/deleteCity/Krakow"))
+        this.mockMvc.perform(delete(BASE_ENDPOINT + "/cities/Krakow"))
                 .andDo(print()).andExpect(status().isOk());
-        String resp = this.mockMvc.perform(get(BASE_ENDPOINT + "/citiesList"))
+        String resp = this.mockMvc.perform(get(BASE_ENDPOINT + "/cities"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
@@ -67,7 +71,7 @@ public class CityControllerTestsWithSetup extends BaseClass {
 
     @Test
     public void getCitiesReturns200() throws Exception{
-        String response = this.mockMvc.perform(get(BASE_ENDPOINT + "/citiesList"))
+        String response = this.mockMvc.perform(get(BASE_ENDPOINT + "/cities"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
@@ -83,15 +87,18 @@ public class CityControllerTestsWithSetup extends BaseClass {
 
     @Test
     public void deleteNotExistingCityReturns400() throws Exception{
-        String message = this.mockMvc.perform(delete(BASE_ENDPOINT + "/deleteCity/Krakow2"))
-                .andDo(print()).andExpect(status().isBadRequest()).andReturn().getResolvedException().getMessage();
-        assertThat(message).isEqualTo("400 BAD_REQUEST \"No such city in a list\"");
+        String message = this.mockMvc.perform(delete(BASE_ENDPOINT + "/cities/Krakow2yt"))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andReturn().getResponse().getContentAsString();
+
+        assertThat(message).isEqualTo("No such city in a list");
     }
 
     @AfterEach
     public void clear() throws Exception{
         if ( verifyCityIsAdded() ) {
-            this.mockMvc.perform(delete(BASE_ENDPOINT + "/deleteCity/Krakow"))
+            this.mockMvc.perform(delete(BASE_ENDPOINT + "/cities/Krakow"))
                     .andDo(print()).andExpect(status().isOk());
         }
     }

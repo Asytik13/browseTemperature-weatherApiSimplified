@@ -25,7 +25,9 @@ public class CityControllerTests extends BaseClass {
 
     @Test
     public void getCitiesReturns404() throws Exception{
-        this.mockMvc.perform(get(BASE_ENDPOINT + "/citiefsList")).andDo(print()).andExpect(status().isNotFound());
+        this.mockMvc.perform(get(BASE_ENDPOINT + "/citiefsList"))
+                .andDo(print())
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -34,11 +36,14 @@ public class CityControllerTests extends BaseClass {
         JsonConverter converter = new JsonConverter();
         String body = createRequestBody("Krakow");
 
-
-        String actualResponseBody = this.mockMvc.perform(post(BASE_ENDPOINT + "/city")
+        String actualResponseBody = this.mockMvc.perform(post(BASE_ENDPOINT + "/cities")
                                                                  .contentType(MediaType.APPLICATION_JSON)
                                                                  .content(body))
-                .andDo(print()).andExpect(status().isCreated()).andReturn().getResponse().getContentAsString();
+                .andDo(print())
+                .andExpect(status().isCreated())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
 
         CityResponseModel response = new CityResponseModel(new City("Krakow", 0));
         String expectedResponseBody = converter.convertObjectToJson(response);
@@ -50,11 +55,15 @@ public class CityControllerTests extends BaseClass {
     public void postCityReturns400() throws Exception{
 
         String body = createRequestBody(null);
-        String message = this.mockMvc.perform(post(BASE_ENDPOINT + "/city")
+        String message = this.mockMvc.perform(post(BASE_ENDPOINT + "/cities")
                                                       .contentType(MediaType.APPLICATION_JSON)
                                                       .content(body))
-                .andDo(print()).andExpect(status().isBadRequest()).andReturn().getResolvedException().getMessage();
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
 
-        assertThat(message).isEqualTo("400 BAD_REQUEST \"City is Not Added. Invalid body\"");
+        assertThat(message).isEqualTo("City is Not Added");
     }
 }

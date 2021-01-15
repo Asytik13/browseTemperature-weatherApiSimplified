@@ -10,11 +10,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @RestController
-public class CityController {
+@RequestMapping("/cities")
+public class CitiesController {
 
     private CityService cityService;
 
@@ -23,20 +23,20 @@ public class CityController {
         this.cityService = cityService;
     }
 
-    @GetMapping(path = "/citiesList")
-    public ResponseEntity<CityResponseModelGetCities> getCities(){
+    @GetMapping()
+    public ResponseEntity<?> getCities(){
         try {
             List<City> allCities = cityService.getAllCities();
             CityResponseModelGetCities cityResponseModel = new CityResponseModelGetCities();
             cityResponseModel.setCities(allCities);
             return new ResponseEntity<>(cityResponseModel, HttpStatus.OK);
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bad request");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad request");
         }
     }
 
-    @PostMapping(path = "/city", consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CityResponseModel> createCity(@RequestBody CityRequestModel city) throws Exception{
+    @PostMapping(consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> createCity(@RequestBody CityRequestModel city) throws Exception{
         try {
             String name = city.getCity();
             City newCity = cityService.addCity(name);
@@ -44,18 +44,18 @@ public class CityController {
             CityResponseModel response = new CityResponseModel(newCity);
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "City is Not Added. " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("City is Not Added" );
         }
     }
 
-    @DeleteMapping(value = "/deleteCity/{name}")
+    @DeleteMapping(value = "/{name}")
     public ResponseEntity deletePost(@PathVariable String name){
 
         try {
             cityService.removeCity(name);
             return (ResponseEntity) ResponseEntity.ok("City is removed");
         } catch (NoSuchFieldException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No such city in a list");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No such city in a list");
         }
     }
 }
